@@ -20,7 +20,7 @@ const Add = ({ token }) => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log("kalzang");
+
     try {
       const formData = new formData();
       formData.append("name", name);
