@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { assets } from "../assets/assets";
 import axios from "axios";
 
@@ -15,36 +15,40 @@ const Add = ({ token }) => {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("Men");
   const [subCategory, setSubCategory] = useState("Topwear");
-  const [size, setSize] = useState([]);
+  const [sizes, setSizes] = useState([]);
   const [bestSeller, setBestSeller] = useState(false);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
     try {
-      const formData = new formData();
+      const formData = new FormData();
       formData.append("name", name);
       formData.append("description", description);
       formData.append("price", price);
       formData.append("category", category);
       formData.append("subCategory", subCategory);
       formData.append("bestSeller", bestSeller);
-      formData.append("size", JSON.stringify(size));
+      formData.append("sizes", JSON.stringify(sizes));
 
       image1 && formData.append("image1", image1);
       image2 && formData.append("image2", image2);
       image3 && formData.append("image3", image3);
-      image3 && formData.append("image4", image4);
-
+      image4 && formData.append("image4", image4);
+      console.log({ token });
       const response = await axios.post(
         backendUrl + "/api/product/add",
         formData,
         {
-          headers: { token },
+          headers: {
+            token: token,
+          },
         }
       );
-      console.log(response.data);
-    } catch (error) {}
+      console.log("SUCESS:", response.data);
+    } catch (error) {
+      console.log(error);
+      res.json({ success: false, message: error.message });
+    }
   };
 
   return (
@@ -169,7 +173,7 @@ const Add = ({ token }) => {
           <div className="flex gap-3">
             <div
               onClick={() =>
-                setSize((prev) =>
+                setSizes((prev) =>
                   prev.includes("S")
                     ? prev.filter((item) => item !== "S")
                     : [...prev, "S"]
@@ -178,7 +182,7 @@ const Add = ({ token }) => {
             >
               <p
                 className={`${
-                  size.includes("S") ? "bg-pink-100" : "bg-slate-200"
+                  sizes.includes("S") ? "bg-pink-100" : "bg-slate-200"
                 } px-3 py-2  cursor-pointer`}
               >
                 S
@@ -186,7 +190,7 @@ const Add = ({ token }) => {
             </div>
             <div
               onClick={() =>
-                setSize((prev) =>
+                setSizes((prev) =>
                   prev.includes("M")
                     ? prev.filter((item) => item !== "M")
                     : [...prev, "M"]
@@ -195,7 +199,7 @@ const Add = ({ token }) => {
             >
               <p
                 className={`${
-                  size.includes("M") ? "bg-pink-100" : "bg-slate-200"
+                  sizes.includes("M") ? "bg-pink-100" : "bg-slate-200"
                 } px-3 py-2  cursor-pointer`}
               >
                 M
@@ -203,7 +207,7 @@ const Add = ({ token }) => {
             </div>
             <div
               onClick={() =>
-                setSize((prev) =>
+                setSizes((prev) =>
                   prev.includes("L")
                     ? prev.filter((item) => item !== "L")
                     : [...prev, "L"]
@@ -212,7 +216,7 @@ const Add = ({ token }) => {
             >
               <p
                 className={`${
-                  size.includes("L") ? "bg-pink-100" : "bg-slate-200"
+                  sizes.includes("L") ? "bg-pink-100" : "bg-slate-200"
                 } px-3 py-2  cursor-pointer`}
               >
                 L
@@ -220,7 +224,7 @@ const Add = ({ token }) => {
             </div>
             <div
               onClick={() =>
-                setSize((prev) =>
+                setSizes((prev) =>
                   prev.includes("XL")
                     ? prev.filter((item) => item !== "XL")
                     : [...prev, "XL"]
@@ -229,7 +233,7 @@ const Add = ({ token }) => {
             >
               <p
                 className={`${
-                  size.includes("XL") ? "bg-pink-100" : "bg-slate-200"
+                  sizes.includes("XL") ? "bg-pink-100" : "bg-slate-200"
                 } px-3 py-2  cursor-pointer`}
               >
                 XL
@@ -237,7 +241,7 @@ const Add = ({ token }) => {
             </div>
             <div
               onClick={() =>
-                setSize((prev) =>
+                setSizes((prev) =>
                   prev.includes("XXL")
                     ? prev.filter((item) => item !== "XXL")
                     : [...prev, "XXL"]
@@ -246,7 +250,7 @@ const Add = ({ token }) => {
             >
               <p
                 className={`${
-                  size.includes("XXL") ? "bg-pink-100" : "bg-slate-200"
+                  sizes.includes("XXL") ? "bg-pink-100" : "bg-slate-200"
                 } px-3 py-2  cursor-pointer`}
               >
                 XXL
@@ -257,7 +261,6 @@ const Add = ({ token }) => {
             <input
               onChange={() => setBestSeller((prev) => !prev)}
               checked={bestSeller}
-              value={price}
               type="checkbox"
               id="bestseller"
             />
