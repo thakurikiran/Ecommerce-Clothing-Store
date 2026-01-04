@@ -5,7 +5,21 @@ import { ShopContext } from "../context/ShopContext";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  const { setShowSearch, getCartCount } = useContext(ShopContext);
+  const {
+    setShowSearch,
+    getCartCount,
+    navigate,
+    token,
+    setToken,
+    setCartItems,
+  } = useContext(ShopContext);
+
+  const logOut = async () => {
+    navigate("/login");
+    localStorage.removeItem("token");
+    setToken("");
+    setCartItems({});
+  };
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       <Link to="/">
@@ -14,7 +28,7 @@ const Navbar = () => {
       <ul className="hidden sm:flex gap-5 text-gray-700 text-sm">
         <NavLink to="/" className="flex flex-col items-center gap-1">
           <p>HOME</p>
-          <hr className="w-2/4 border-none h-[1.5px]  bg-gray-700 hidden" /> 
+          <hr className="w-2/4 border-none h-[1.5px]  bg-gray-700 hidden" />
         </NavLink>
         <NavLink to="/collection" className="flex flex-col items-center gap-1">
           <p>COLLECTION</p>
@@ -37,25 +51,34 @@ const Navbar = () => {
           alt=""
         />
         <div className="group relative">
-          <Link to={"/login"}>
-            <img
-              src={assets.profile_icon}
-              className="w-5 cursor-pointer"
-              alt=""
-            />
-          </Link>
-          <div
-            className="absolute right-5 pt-3 opacity-0 invisible 
+          <img
+            onClick={() => (token ? null : navigate("/login"))}
+            src={assets.profile_icon}
+            className="w-5 cursor-pointer"
+            alt=""
+          />
+          {/* Dropdown Menu */}
+          {token && (
+            <div
+              className="absolute right-5 pt-3 opacity-0 invisible 
                 group-hover:opacity-100 group-hover:visible
                 transition-all duration-200 ease-out
                 group-hover:translate-y-0 translate-y-2"
-          >
-            <div className="flex flex-col w-36 px-5 py-3 bg-slate-100 text-gray-500 rounded-md shadow-md">
-              <p className="cursor-pointer hover:text-black">My Profile</p>
-              <p className="cursor-pointer hover:text-black">Orders</p>
-              <p className="cursor-pointer hover:text-black">Logout</p>
+            >
+              <div className="flex flex-col w-36 px-5 py-3 bg-slate-100 text-gray-500 rounded-md shadow-md">
+                <p className="cursor-pointer hover:text-black">My Profile</p>
+                <p
+                  onClick={() => navigate("/orders")}
+                  className="cursor-pointer hover:text-black"
+                >
+                  Orders
+                </p>
+                <p onClick={logOut} className="cursor-pointer hover:text-black">
+                  Logout
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <Link to="/cart" className="relative">
           <img src={assets.cart_icon} className="w-5" />
