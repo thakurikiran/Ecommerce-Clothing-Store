@@ -16,7 +16,7 @@ const List = () => {
 
   useEffect(() => {
     fetchList();
-  }, [list]);
+  }, []);
 
   return (
     <div>

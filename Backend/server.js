@@ -13,8 +13,6 @@ const port = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use(cors());
-connectDB();
-connectCloudinary();
 
 //api endpoints
 
@@ -24,4 +22,15 @@ app.get("/", (req, res) => {
   res.send("API WORKING");
 });
 
-app.listen(port, () => console.log("Server is started on PORT :" + port));
+const startServer = async () => {
+  try {
+    await connectDB();
+    connectCloudinary();
+    app.listen(port, () => console.log("Server is started on PORT :" + port));
+  } catch (error) {
+    console.error("Server start failed:", error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
