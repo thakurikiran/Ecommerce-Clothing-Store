@@ -16,13 +16,16 @@ import "react-toastify/dist/ReactToastify.css";
 import PlaceOrder from "./pages/PlaceOrder";
 
 const App = () => {
+  console.log("error");
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <ToastContainer />
       <Navbar />
       <SearchBar />
+
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />

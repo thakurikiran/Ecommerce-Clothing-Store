@@ -63,6 +63,13 @@ Notes:
 - `MONGODB_URI` should point to your MongoDB server root URI; the backend appends `/e-commerce` automatically.
 - Never commit real secrets. Use your deployment platform secret manager in production.
 
+If your backend is already deployed on Azure App Service, set both frontend/admin build-time URLs to:
+
+```env
+FRONTEND_VITE_BACKEND_URL=https://ecom-backend-dkdjbmgnf6fnasa6.eastasia-01.azurewebsites.net
+ADMIN_VITE_BACKEND_URL=https://ecom-backend-dkdjbmgnf6fnasa6.eastasia-01.azurewebsites.net
+```
+
 ## Run With Docker Compose
 
 ```bash

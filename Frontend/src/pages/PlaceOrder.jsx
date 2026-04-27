@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import Title from "../components/Title";
 import CartTotal from "../components/CartTotal";
 import { assets } from "../assets/assets";
-import { useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState("cod");
@@ -14,7 +14,7 @@ const PlaceOrder = () => {
     token,
     cartitems,
     setCartitems,
-    getCartAmount,
+    getCartTotal,
     delivery_fee,
     products,
   } = useContext(ShopContext);
@@ -53,7 +53,7 @@ const PlaceOrder = () => {
     }));
   };
 
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
       let orderItems = [];
@@ -75,17 +75,37 @@ const PlaceOrder = () => {
       let orderData = {
         address: formData,
         items: orderItems,
-        amount: getCartAmount() + delivery_fee,
+        amount: getCartTotal() + delivery_fee,
       };
 
-      switch (method) { 
+      switch (method) {
         //Api calls for Cod
-        case "cod":
-          const response = axios.post(backendUrl + "api/orderplace", orderData ,{});
+        case "cod": {
+          const response = await axios.post(
+            `${backendUrl}/api/order/place`,
+            orderData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+
+          if (response.data.success) {
+            setCartitems({});
+            navigate("/orders");
+          } else {
+            toast.error(response.data.message);
+          }
+          break;
+        }
+        default:
+          toast.error("Selected payment method is not available yet");
           break;
       }
     } catch (error) {
       console.error("Order error:", error);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
@@ -95,7 +115,7 @@ const PlaceOrder = () => {
       className="flex justify-between flex-col sm:flex-row gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t"
     >
       {/* Left side */}
-      <div className=" flex flex-col gap-4 w-full sm:max-w-[480px]">
+      <div className=" flex flex-col gap-4 w-full sm:max-w-120">
         <div>
           <Title text1={"DELIVERY"} text2={"INFORMATION"} />
         </div>
@@ -194,7 +214,7 @@ const PlaceOrder = () => {
         </div>
       </div>
 
-      <div className="mt-8 flex flex-col gap-4 w-full sm:max-w-[480px]  ">
+      <div className="mt-8 flex flex-col gap-4 w-full sm:max-w-120  ">
         {/* Right Side */}
         <div className=" w-full mt-8 min-w-90">
           <CartTotal />

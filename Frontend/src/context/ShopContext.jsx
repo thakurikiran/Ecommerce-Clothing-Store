@@ -5,7 +5,10 @@ import axios from "axios";
 
 export const ShopContext = createContext();
 const ShopContextProvider = (props) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = (
+    import.meta.env.VITE_BACKEND_URL ||
+    "https://ecom-backend-dkdjbmgnf6fnasa6.eastasia-01.azurewebsites.net"
+  ).replace(/\/+$/, "");
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const currency = "$";

@@ -9,11 +9,14 @@ import Login from "./components/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const backendUrl = import.meta.env.VITE_BACKEND_URL;
+export const backendUrl = (
+  import.meta.env.VITE_BACKEND_URL ||
+  "https://ecom-backend-dkdjbmgnf6fnasa6.eastasia-01.azurewebsites.net"
+).replace(/\/+$/, "");
 
 const App = () => {
   const [token, setToken] = useState(
-    localStorage.getItem("token") ? localStorage.getItem("token") : ""
+    localStorage.getItem("token") ? localStorage.getItem("token") : "",
   );
 
   useEffect(() => {
