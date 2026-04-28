@@ -1,6 +1,7 @@
 # Ecommerce Clothing Store   
 
 https://wonderful-island-0dc056100.7.azurestaticapps.net
+ecom-backend-dkdjbmgnf6fnasa6.eastasia-01.azurewebsites.net
 
 
 Production-focused ecommerce monorepo with three deployable services:
