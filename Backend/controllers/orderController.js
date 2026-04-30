@@ -4,7 +4,7 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 
 // Place order using Cash On Delivery only
-export const placeOrderCOD = async (req, res) => {
+export const placeOrder = async (req, res) => {
   try {
     const { userId, items, amount, address } = req.body;
 
@@ -54,6 +54,69 @@ export const placeOrderCOD = async (req, res) => {
       message: "Order placed successfully",
       orderId: order._id,
     });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// Placeholder handlers to preserve existing routes until implemented.
+export const placeOrderStripe = async (req, res) => {
+  res.status(501).json({ success: false, message: "Stripe not implemented" });
+};
+
+export const allOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.find({}).sort({ date: -1 });
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export const usersOrders = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "userId is required" });
+    }
+
+    const orders = await orderModel.find({ userId }).sort({ date: -1 });
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
+export const updateStatus = async (req, res) => {
+  try {
+    const { orderId, status } = req.body;
+
+    if (!orderId || !status) {
+      return res.status(400).json({
+        success: false,
+        message: "orderId and status are required",
+      });
+    }
+
+    const updated = await orderModel.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true },
+    );
+
+    if (!updated) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+
+    res.json({ success: true, order: updated });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });

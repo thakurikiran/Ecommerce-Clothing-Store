@@ -13,7 +13,7 @@ const PlaceOrder = () => {
     backendUrl,
     token,
     cartitems,
-    setCartitems,
+    setCartItems,
     getCartTotal,
     delivery_fee,
     products,
@@ -92,7 +92,7 @@ const PlaceOrder = () => {
           );
 
           if (response.data.success) {
-            setCartitems({});
+            setCartItems({});
             navigate("/orders");
           } else {
             toast.error(response.data.message);
