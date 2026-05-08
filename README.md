@@ -1,6 +1,12 @@
 # Ecommerce Clothing Store   
 
-https://wonderful-island-0dc056100.7.azurestaticapps.net
+https://wonderful-island-0dc056100.7.azurestaticapps.net  - Frontend
+https://lemon-smoke-0853f1d00.7.azurestaticapps.net  - Admin
+ecom-backend-dkdjbmgnf6fnasa6.eastasia-01.azurewebsites.net  - Backend
+
+ADMIN_USERNAME=admin@example.com
+ADMIN_PASSWORD=admin123
+
 
 
 
