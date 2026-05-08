@@ -1,10 +1,13 @@
 # Ecommerce Clothing Store   
 
 https://wonderful-island-0dc056100.7.azurestaticapps.net  - Frontend
+
 https://lemon-smoke-0853f1d00.7.azurestaticapps.net  - Admin
+
 ecom-backend-dkdjbmgnf6fnasa6.eastasia-01.azurewebsites.net  - Backend
 
 ADMIN_USERNAME=admin@example.com
+
 ADMIN_PASSWORD=admin123
 
 
@@ -152,7 +155,7 @@ Product routes:
 - `POST /api/product/add` (admin token required in `token` header)
 - `POST /api/product/remove` (admin token required in `token` header)
 
-## Production Deployment Guidance
+
 
 ### Security Baseline
 
@@ -162,37 +165,9 @@ Product routes:
 - Run behind TLS termination (Nginx, Traefik, cloud load balancer).
 - Enforce least-privilege MongoDB and Cloudinary credentials.
 
-### Operational Baseline
 
-- Enable centralized logs for all three containers.
-- Add container health checks and restart policies (already set to `unless-stopped`).
-- Add uptime, latency, and error-rate monitoring on backend endpoints.
-- Schedule MongoDB backups and verify restore drills.
-- Pin and regularly patch base container images.
 
-### Deployment Workflow (Recommended)
 
-1. Build and tag immutable images per service.
-2. Run vulnerability scan on images.
-3. Deploy images with environment-specific secrets.
-4. Run smoke checks (`/`, `/health`, login flow, product list).
-5. Promote to production after validation.
 
-## Troubleshooting
 
-- Backend fails to start with MongoDB error:
-  - Verify `MONGODB_URI` format and network access.
-  - Confirm credentials and IP allowlist on MongoDB provider.
-- Frontend/admin cannot reach API:
-  - Ensure `FRONTEND_VITE_BACKEND_URL` and `ADMIN_VITE_BACKEND_URL` point to the reachable backend URL.
-- Image upload failures:
-  - Check Cloudinary environment variables and account limits.
 
-## Notes About Current Scope
-
-- The repository includes cart/order modules, but `server.js` currently mounts user and product routers only.
-- If you enable additional routes, update this README and deployment smoke tests accordingly.
-
-## License
-
-No license file is currently defined in this repository.
